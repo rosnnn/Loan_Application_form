@@ -21,9 +21,10 @@ const Step4Address = forwardRef(({ onNext, onPrevious, onSaveDraft }, ref) => {
   const { formData, updateFormData } = useFormData();
   const currentPinLookup = usePinCodeLookup();
   const [stateMismatch, setStateMismatch] = useState(false);
+  const [submitErrorMessage, setSubmitErrorMessage] = useState('');
 
   const {
-    register, handleSubmit, control, watch, setValue, formState: { errors },
+    register, handleSubmit, control, watch, setValue, setFocus, formState: { errors },
   } = useForm({
     resolver: zodResolver(step4Schema),
     defaultValues: {
@@ -53,13 +54,38 @@ const Step4Address = forwardRef(({ onNext, onPrevious, onSaveDraft }, ref) => {
   };
 
   const onSubmit = (data) => {
+    setSubmitErrorMessage('');
     updateFormData(data);
     onNext();
   };
 
+  const findFirstErrorPath = (errorObj, prefix = '') => {
+    if (!errorObj || typeof errorObj !== 'object') return null;
+    for (const [key, value] of Object.entries(errorObj)) {
+      const path = prefix ? `${prefix}.${key}` : key;
+      if (value?.message) return path;
+      const nested = findFirstErrorPath(value, path);
+      if (nested) return nested;
+    }
+    return null;
+  };
+
+  const onInvalid = (formErrors) => {
+    const firstErrorPath = findFirstErrorPath(formErrors);
+    const firstMessage = firstErrorPath?.split('.').reduce((acc, part) => acc?.[part], formErrors)?.message;
+    setSubmitErrorMessage(firstMessage || 'Please fix the highlighted fields to continue.');
+    if (firstErrorPath) setFocus(firstErrorPath);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate ref={ref}>
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} noValidate ref={ref}>
       <h2 className="text-xl font-semibold text-primary mb-4">Address Information</h2>
+
+      {submitErrorMessage && (
+        <div role="alert" aria-live="polite" className="mb-4 rounded-md border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">
+          {submitErrorMessage}
+        </div>
+      )}
 
       <h3 className="font-medium text-slate-700 mb-2">Current Address</h3>
       <Input
