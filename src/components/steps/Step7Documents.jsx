@@ -32,6 +32,24 @@ const Step7Documents = forwardRef(({ onNext, onPrevious, onSaveDraft }, ref) => 
   const [error, setError] = useState('');
   const signatureRef = useRef(formData.signature || '');
 
+  const readSignatureFromCanvas = (formEl) => {
+    const canvas = formEl?.querySelector('canvas.signature-canvas');
+    if (!canvas) return '';
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return '';
+
+    const { width, height } = canvas;
+    const { data } = ctx.getImageData(0, 0, width, height);
+    let hasInk = false;
+    for (let i = 3; i < data.length; i += 4) {
+      if (data[i] !== 0) {
+        hasInk = true;
+        break;
+      }
+    }
+    return hasInk ? canvas.toDataURL('image/png') : '';
+  };
+
   const requiredKeys = useMemo(() => getRequiredDocumentKeys(formData), [formData]);
   const optionalPanNote = formData.panVerified;
 
@@ -42,13 +60,21 @@ const Step7Documents = forwardRef(({ onNext, onPrevious, onSaveDraft }, ref) => 
   const handleSignatureChange = (value) => {
     signatureRef.current = value;
     setSignature(value);
+    if (value) setError('');
   };
 
   const allDocsUploaded = requiredKeys.every((key) => (documents[key] || []).length > 0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const latestSignature = signatureRef.current || signature;
+    let latestSignature = signatureRef.current || signature;
+    if (!latestSignature) {
+      latestSignature = readSignatureFromCanvas(e.currentTarget);
+      if (latestSignature) {
+        signatureRef.current = latestSignature;
+        setSignature(latestSignature);
+      }
+    }
     if (!allDocsUploaded) {
       setError('Please upload all required documents.');
       return;
