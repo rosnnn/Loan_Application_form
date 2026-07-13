@@ -59,6 +59,20 @@ const Step4Address = forwardRef(({ onNext, onPrevious, onSaveDraft }, ref) => {
     onNext();
   };
 
+  const fieldLabels = {
+    'current.addressLine1': 'Current Address Line 1',
+    'current.pinCode': 'Current PIN Code',
+    'current.city': 'Current City',
+    'current.state': 'Current State',
+    'current.residenceType': 'Residence Type',
+    'current.rentAmount': 'Monthly Rent Amount',
+    'current.yearsAtAddress': 'Years at Current Address',
+    'permanent.addressLine1': 'Permanent Address Line 1',
+    'permanent.pinCode': 'Permanent PIN Code',
+    'permanent.city': 'Permanent City',
+    'permanent.state': 'Permanent State',
+  };
+
   const findFirstErrorPath = (errorObj, prefix = '') => {
     if (!errorObj || typeof errorObj !== 'object') return null;
     for (const [key, value] of Object.entries(errorObj)) {
@@ -73,7 +87,12 @@ const Step4Address = forwardRef(({ onNext, onPrevious, onSaveDraft }, ref) => {
   const onInvalid = (formErrors) => {
     const firstErrorPath = findFirstErrorPath(formErrors);
     const firstMessage = firstErrorPath?.split('.').reduce((acc, part) => acc?.[part], formErrors)?.message;
-    setSubmitErrorMessage(firstMessage || 'Please fix the highlighted fields to continue.');
+    const fieldLabel = firstErrorPath ? fieldLabels[firstErrorPath] || firstErrorPath : '';
+    setSubmitErrorMessage(
+      firstMessage
+        ? `${fieldLabel ? `${fieldLabel}: ` : ''}${firstMessage}`
+        : 'Please fix the highlighted fields to continue.',
+    );
     if (firstErrorPath) setFocus(firstErrorPath);
   };
 
