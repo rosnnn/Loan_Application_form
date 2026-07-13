@@ -1,0 +1,40 @@
+{
+  "step1": {
+    "loanType": "personal",
+    "loanAmount": "300000",
+    "loanTenure": "36",
+    "loanPurpose": "Wedding",
+    "referralCode": ""
+  },
+  "step2": {
+    "fullName": "Rosn Kumar Jha",
+    "dateOfBirth": "1995-06-15",
+    "gender": "male",
+    "maritalStatus": "Single",
+    "fatherName": "Suresh Jha",
+    "motherName": "Anita Jha",
+    "email": "rosn.test@example.com",
+    "mobileNumber": "9876543210",
+    "alternateMobile": ""
+  },
+  "step3": {
+    "panNumber": "ABCPD1234E",
+    "aadhaarNumber": "234123412346",
+    "voterId": "",
+    "passport": ""
+  },
+  "step4": {
+    "addressLine1": "221B Baker Street",
+    "addressLine2": "Near City Mall",
+    "pinCode": "560001",
+    "residenceType": "owned",
+    "yearsAtAddress": "5"
+  },
+  "step5": {
+    "employmentType": "salaried",
+    "yearsOfExperience": "6",
+    "companyName": "TechCorp Solutions",
+    "designation": "Software Engineer",
+    "monthlyNetSalary": "80000"
+  }
+}

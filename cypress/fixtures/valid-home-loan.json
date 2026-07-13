@@ -1,0 +1,47 @@
+{
+  "step1": {
+    "loanType": "home",
+    "loanAmount": "4500000",
+    "loanTenure": "240",
+    "loanPurpose": "New Home Purchase",
+    "referralCode": ""
+  },
+  "step2": {
+    "fullName": "Priya Sharma",
+    "dateOfBirth": "1988-03-22",
+    "gender": "female",
+    "maritalStatus": "Married",
+    "fatherName": "Ramesh Sharma",
+    "motherName": "Sunita Sharma",
+    "email": "priya.test@example.com",
+    "mobileNumber": "9123456780",
+    "alternateMobile": ""
+  },
+  "step3": {
+    "panNumber": "XYZPD5678F",
+    "aadhaarNumber": "234123412346",
+    "voterId": "",
+    "passport": ""
+  },
+  "step4": {
+    "addressLine1": "45 MG Road",
+    "addressLine2": "",
+    "pinCode": "400001",
+    "residenceType": "rented",
+    "rentAmount": "25000",
+    "yearsAtAddress": "3"
+  },
+  "step5": {
+    "employmentType": "salaried",
+    "yearsOfExperience": "10",
+    "companyName": "Finance Global Ltd",
+    "designation": "Senior Manager",
+    "monthlyNetSalary": "150000"
+  },
+  "step6": {
+    "coApplicantName": "Rajesh Sharma",
+    "relationship": "spouse",
+    "coApplicantPan": "LMNPD9012G",
+    "coApplicantIncome": "70000"
+  }
+}
