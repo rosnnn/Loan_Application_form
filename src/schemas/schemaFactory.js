@@ -170,7 +170,15 @@ export const step4Schema = z
       yearsAtAddress: z.coerce.number().min(0).max(50),
     }),
     sameAsPermanent: z.boolean(),
-    permanent: addressFieldsSchema.partial().optional(),
+    permanent: z
+      .object({
+        addressLine1: z.string().min(5, 'Address must be at least 5 characters').optional().or(z.literal('')),
+        addressLine2: z.string().optional(),
+        pinCode: z.string().regex(PIN_CODE_REGEX, 'PIN code must be 6 digits').optional().or(z.literal('')),
+        city: z.string().min(1, 'City is required').optional().or(z.literal('')),
+        state: z.string().min(1, 'State is required').optional().or(z.literal('')),
+      })
+      .optional(),
   })
   .superRefine((data, ctx) => {
     if (data.current.residenceType === 'rented' && (!data.current.rentAmount || data.current.rentAmount <= 0)) {
