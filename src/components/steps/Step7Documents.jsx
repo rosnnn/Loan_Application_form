@@ -1,4 +1,6 @@
-import React, { forwardRef, useMemo, useState } from 'react';
+import React, {
+  forwardRef, useMemo, useRef, useState,
+} from 'react';
 import { useFormData } from '../../context/FormDataContext';
 import FileUpload from '../common/FileUpload';
 import SignatureCanvasField from '../common/SignatureCanvas';
@@ -28,6 +30,7 @@ const Step7Documents = forwardRef(({ onNext, onPrevious, onSaveDraft }, ref) => 
   const [documents, setDocuments] = useState(formData.documents || {});
   const [signature, setSignature] = useState(formData.signature || '');
   const [error, setError] = useState('');
+  const signatureRef = useRef(formData.signature || '');
 
   const requiredKeys = useMemo(() => getRequiredDocumentKeys(formData), [formData]);
   const optionalPanNote = formData.panVerified;
@@ -36,20 +39,26 @@ const Step7Documents = forwardRef(({ onNext, onPrevious, onSaveDraft }, ref) => 
     setDocuments((prev) => ({ ...prev, [key]: files }));
   };
 
+  const handleSignatureChange = (value) => {
+    signatureRef.current = value;
+    setSignature(value);
+  };
+
   const allDocsUploaded = requiredKeys.every((key) => (documents[key] || []).length > 0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const latestSignature = signatureRef.current || signature;
     if (!allDocsUploaded) {
       setError('Please upload all required documents.');
       return;
     }
-    if (!signature) {
+    if (!latestSignature) {
       setError('Please provide your e-signature.');
       return;
     }
     setError('');
-    updateFormData({ documents, signature });
+    updateFormData({ documents, signature: latestSignature });
     onNext();
   };
 
@@ -83,7 +92,7 @@ const Step7Documents = forwardRef(({ onNext, onPrevious, onSaveDraft }, ref) => 
         />
       ))}
 
-      <SignatureCanvasField value={signature} onChange={setSignature} />
+      <SignatureCanvasField value={signature} onChange={handleSignatureChange} />
 
       {error && <p role="alert" aria-live="polite" className="text-sm text-danger mb-4">{error}</p>}
 
