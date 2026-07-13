@@ -1,0 +1,49 @@
+{
+  "env": { "browser": true, "es2021": true, "cypress/globals": true },
+  "extends": [
+    "airbnb",
+    "plugin:react-hooks/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:cypress/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "ecmaFeatures": { "jsx": true }
+  },
+  "plugins": ["react", "react-hooks", "jsx-a11y", "import"],
+  "settings": {
+    "react": { "version": "detect" }
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": ["warn", { "extensions": [".jsx"] }],
+    "react/prop-types": "off",
+    "import/prefer-default-export": "off",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "react/require-default-props": "off",
+    "jsx-a11y/label-has-associated-control": ["error", { "assert": "either" }],
+    "max-len": ["error", { "code": 200, "ignoreComments": true, "ignoreStrings": true }],
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/function-component-definition": "off",
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "no-continue": "off",
+    "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"]
+  },
+  "overrides": [
+    {
+      "files": ["cypress/**/*.js", "cypress.config.js"],
+      "env": { "cypress/globals": true },
+      "rules": {
+        "no-undef": "off",
+        "import/no-extraneous-dependencies": "off",
+        "cypress/unsafe-to-chain-command": "off",
+        "cypress/no-unnecessary-waiting": "off",
+        "no-unused-expressions": "off"
+      }
+    }
+  ],
+  "ignorePatterns": ["dist", "node_modules"]
+}
