@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-slate-50 text-slate-800;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.skip-link {
+  @apply absolute -top-40 left-2 z-50 bg-white px-4 py-2 rounded shadow focus:top-2;
+}
